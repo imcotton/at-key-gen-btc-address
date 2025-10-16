@@ -40,6 +40,22 @@ describe('main', function () {
 
     });
 
+    it('supports --passphrase', async function () {
+
+        const res = await new Promise<string>(async function (resolve) {
+
+            await main(parse([
+                '--passphrase', '01189998819991197253',
+                '--format', 'wpkh',
+                ...mnemonic,
+            ]), resolve);
+
+        });
+
+        ast.assertEquals(res, 'bc1qf7vr7lxxeh40sknwx4a5wdm8cmgl03j5r7dfq8');
+
+    });
+
     it('supports -n3 emit', async function () {
 
         const mock = fn();
