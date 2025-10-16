@@ -82,13 +82,10 @@ function payment (type: Purpose) {
             throw new Error('no private key');
         }
 
-        const address = getAddress(type, key.privateKey);
+        // deno-lint-ignore no-non-null-assertion
+        const address = getAddress(type, key.privateKey)!;
 
         key.wipePrivateData();
-
-        if (address == null) {
-            throw new Error('no address');
-        }
 
         return { index, path, address };
 
