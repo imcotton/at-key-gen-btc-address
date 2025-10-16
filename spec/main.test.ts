@@ -1,4 +1,5 @@
 import * as ast from '@std/assert';
+import { expect, fn } from '@std/expect';
 import { describe, it } from '@std/testing/bdd';
 
 import { main } from '#src/main.ts';
@@ -17,6 +18,28 @@ describe('main', function () {
         genuine donkey moon sail cave eyebrow burst load
 
     `.trim().split(/\s+/);
+
+    it('supports -n3 emit', async function () {
+
+        const mock = fn();
+
+        await main(parse([ '-n3', '-f', 'tr', ...mnemonic ]), mock as never);
+
+        [
+
+            'bc1pnc0pk9daxk9a7h5kqfuj24zrxu9ujm9gjwes7mqghvzj26jt9wnqeggy7g',
+            'bc1pyf2c9jt7ek0tlaa6js8v43cm9vu540lrpzfk7ynflhcdajgcf3mqk6sgqy',
+            'bc1pklla86akkfspsfr5exn3lu29s3ypfatlx33uavx0kal6tueh26jq7tld2a',
+
+        ].forEach((addr, i) => {
+
+            expect(mock).toHaveBeenNthCalledWith(i + 1, addr);
+
+        });
+
+        expect(mock).toHaveBeenCalledTimes(3);
+
+    });
 
     it('support reading from both args and stdin', async function () {
 
