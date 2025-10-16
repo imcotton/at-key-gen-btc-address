@@ -68,7 +68,7 @@ export async function main (
 
 
 
-function payment (type: Purpose) {
+export function payment (type: Purpose) {
 
     return function ({ key, path, index }: {
 
