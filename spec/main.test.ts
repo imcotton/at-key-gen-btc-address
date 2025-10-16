@@ -19,6 +19,24 @@ describe('main', function () {
 
     `.trim().split(/\s+/);
 
+    it('emits derive path in verbose mode', async function () {
+
+        const mock = fn();
+
+        await main(parse([
+            '--verbose',
+            '--account', '9',
+            '--format', 'pkh',
+            ...mnemonic,
+        ]), mock as never);
+
+        expect(mock).toHaveBeenCalledWith(
+            `m/44'/0'/9'/0/0`,
+            '16ikowat1deoZjwNnpDvLrPTvJiu3As4xB',
+        );
+
+    });
+
     it('supports -n3 emit', async function () {
 
         const mock = fn();
