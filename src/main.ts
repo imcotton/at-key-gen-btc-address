@@ -24,7 +24,7 @@ export async function main (
 
         print = console.log,
 
-        text_stdin = () => text(stdin),
+        text_stdin = (() => text(stdin)) as IO_or_Task<string>,
 
 ) {
 
@@ -127,4 +127,12 @@ function make (prefix: string) {
     };
 
 }
+
+
+
+
+
+type         IO <T> = () => T;
+type       Task <T> = () => Promise<T>;
+type IO_or_Task <T> = IO<T> | Task<T>;
 
