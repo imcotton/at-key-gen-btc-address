@@ -13,6 +13,7 @@ import { USAGE } from './help.ts';
 
 
 export async function main (
+// deno-coverage-ignore-start
 
         {
 
@@ -26,6 +27,7 @@ export async function main (
 
         text_stdin = (() => text(stdin)) as IO_or_Task<string>,
 
+// deno-coverage-ignore-stop
 ) {
 
     if (help) {
