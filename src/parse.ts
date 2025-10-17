@@ -14,7 +14,7 @@ export function parse (args: Iterable<string>) {
         options,
     });
 
-    const { format, account, passphrase, num, verbose, help } = values;
+    const { format, account, num, ...rest } = values;
 
     assert_purpose(format);
 
@@ -26,19 +26,12 @@ export function parse (args: Iterable<string>) {
 
     const n = Number(num) || 1;
 
-    if (positionals.length === 0) {
+    const sentence = positionals.length > 0
+        ? positionals.join(' ')
+        : void 0
+    ;
 
-        return {
-            format, purpose, account, passphrase, n, verbose, help
-        };
-
-    }
-
-    const sentence = positionals.join(' ');
-
-    return {
-            format, purpose, account, passphrase, n, verbose, help, sentence
-    };
+    return { format, purpose, account, n, sentence, ...rest };
 
 }
 
