@@ -14,7 +14,7 @@ export function parse (args: Iterable<string>) {
         options,
     });
 
-    const { format, account, num, ...rest } = values;
+    const { format, account, internal, num, ...rest } = values;
 
     assert_purpose(format);
 
@@ -24,6 +24,8 @@ export function parse (args: Iterable<string>) {
         throw new Error('invalid account index', { cause: account });
     }
 
+    const change = internal ? 1 : 0;
+
     const n = Number(num) || 1;
 
     const sentence = positionals.length > 0
@@ -31,7 +33,7 @@ export function parse (args: Iterable<string>) {
         : void 0
     ;
 
-    return { format, purpose, account, n, sentence, ...rest };
+    return { format, purpose, account, change, n, sentence, ...rest };
 
 }
 
@@ -56,6 +58,11 @@ const options = {
         short: 'a',
         type: 'string',
         default: '0',
+    },
+
+    internal: {
+        short: 'i',
+        type: 'boolean',
     },
 
     passphrase: {

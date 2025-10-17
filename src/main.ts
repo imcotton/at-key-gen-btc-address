@@ -17,7 +17,7 @@ export async function main (
 
         {
 
-            format, purpose, account,
+            format, purpose, account, change,
             sentence, passphrase,
             n, verbose, help,
 
@@ -42,7 +42,7 @@ export async function main (
 
         .then(HDKey.fromMasterSeed)
 
-        .then(make(`m/${ purpose }'/${ coin }'/${ account }'/0`))
+        .then(make(`m/${ purpose }'/${ coin }'/${ account }'/${ change }`))
 
     ;
 
