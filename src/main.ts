@@ -19,6 +19,7 @@ export async function main (
 
             format, purpose, account, change,
             sentence, passphrase,
+            root_xprv, extend_xpub,
             n, verbose, help,
 
         }: Result,
@@ -38,13 +39,25 @@ export async function main (
 
     const mnemonic = sentence ?? await text_stdin();
 
-    const { derive } = await to_seed(mnemonic.trim(), passphrase)
+    const { root, extend, derive } = await to_seed(mnemonic.trim(), passphrase)
 
         .then(HDKey.fromMasterSeed)
 
         .then(make(purpose, coin, account))
 
     ;
+
+    if (root_xprv) {
+        print(root.privateExtendedKey);
+        root.wipePrivateData();
+        return;
+    }
+
+    if (extend_xpub) {
+        print(extend.publicExtendedKey);
+        root.wipePrivateData();
+        return;
+    }
 
     const entries = derive(change).map(payment(format));
 

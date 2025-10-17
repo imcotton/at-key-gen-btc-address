@@ -22,6 +22,66 @@ describe('main', function () {
 
     `.trim().split(/\s+/);
 
+    it('supports --root-xprv --format wpkh', async function () {
+
+        const res = await new Promise<string>(async function (resolve) {
+
+            await main(parse([
+                '--root-xprv', '--format=wpkh',
+                ...mnemonic,
+            ]), resolve);
+
+        });
+
+        ast.assertEquals(res, `
+
+            xprv9s21ZrQH143K32FdKprpNdL2SiDEnnd7qaZUWj4rchuFCRgkK4J
+            ZfJYxgn64Yq89TYGXBmhc9Xf6ihrkfYrgNipAfGxr7bpMjyWZ6tKFZEn
+
+        `.replace(/\W+/g, ''));
+
+    });
+
+    it('supports --extend-xpub --format pkh', async function () {
+
+        const res = await new Promise<string>(async function (resolve) {
+
+            await main(parse([
+                '--extend-xpub', '--format=pkh',
+                ...mnemonic,
+            ]), resolve);
+
+        });
+
+        ast.assertEquals(res, `
+
+            xpub6D8mSepz3yq3Pwfrqy1wppYcXPXgLWZAG7dXss4AgpuzgpC1TB2
+            c1G8m7ZNFhM5nTDfgcaHPSzgQwTQHzFJDDR7VqEsBjREeyfkfFLna2Tz
+
+        `.replace(/\W+/g, ''));
+
+    });
+
+    it('supports --extend-xpub --format tr', async function () {
+
+        const res = await new Promise<string>(async function (resolve) {
+
+            await main(parse([
+                '--extend-xpub', '--format=tr',
+                ...mnemonic,
+            ]), resolve);
+
+        });
+
+        ast.assertEquals(res, `
+
+            xpub6DMhkbAoDSmHLg79EB62G3hevgNgA6mdJDzRrhpZjALkbZygPW9
+            PycSLpYMxQfsoRqYL817pfVUF5rmP1CjhvVW1gT28FcG4LfNXcDHfjqS
+
+        `.replace(/\W+/g, ''));
+
+    });
+
     it('supports set --internal flag', async function () {
 
         const mock = fn();
