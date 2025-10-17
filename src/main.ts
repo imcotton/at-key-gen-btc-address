@@ -2,7 +2,7 @@ import { stdin } from 'node:process';
 import { text } from 'node:stream/consumers';
 
 import { HDKey } from '@scure/bip32';
-import { mnemonicToSeedWebcrypto } from '@scure/bip39';
+import { mnemonicToSeedWebcrypto as to_seed } from '@scure/bip39';
 import { getAddress } from '@scure/btc-signer/payment.js';
 
 import type { Purpose, Result } from './parse.ts';
@@ -38,15 +38,15 @@ export async function main (
 
     const mnemonic = sentence ?? await text_stdin();
 
-    const keys = await mnemonicToSeedWebcrypto(mnemonic.trim(), passphrase)
+    const { derive } = await to_seed(mnemonic.trim(), passphrase)
 
         .then(HDKey.fromMasterSeed)
 
-        .then(make(`m/${ purpose }'/${ coin }'/${ account }'/${ change }`))
+        .then(make(purpose, coin, account))
 
     ;
 
-    const entries = keys.map(payment(format));
+    const entries = derive(change).map(payment(format));
 
     for (const { path, address } of entries.take(n)) {
 
@@ -97,31 +97,43 @@ export function payment (type: Purpose) {
 
 
 
-function make (prefix: string) {
+function make (purpose: string, coin: string, account: string) {
 
-    return function * (root: HDKey) {
+    const prefix = `m/${ purpose }'/${ coin }'/${ account }'`;
 
-        let index = 0;
+    return function (root: HDKey) {
 
-        try {
+        const extend = root.derive(prefix);
 
-            while (true) {
+        function * derive (change: number) {
 
-                const path = `${ prefix }/${ index }`;
+            const extend_change = extend.deriveChild(change);
 
-                const key = root.derive(path);
+            let index = 0;
 
-                yield { key, path, index };
+            try {
 
-                index += 1;
+                while (true) {
+
+                    const path = [ prefix, change, index ].join('/');
+
+                    const key = extend_change.deriveChild(index);
+
+                    yield { key, path, index };
+
+                    index += 1;
+
+                }
+
+            } finally {
+
+                root.wipePrivateData();
 
             }
 
-        } finally {
-
-            root.wipePrivateData();
-
         }
+
+        return { root, extend, derive };
 
     };
 
