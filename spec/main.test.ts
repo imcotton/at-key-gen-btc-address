@@ -22,6 +22,19 @@ describe('main', function () {
 
     `.trim().split(/\s+/);
 
+    it('supports set --internal flag', async function () {
+
+        const mock = fn();
+
+        await main(parse([ '-v', '--internal', ...mnemonic ]), mock as never);
+
+        expect(mock).toHaveBeenCalledWith(
+            `m/84'/0'/0'/1/0`,
+            'bc1q6lrmdkjjzh83qhfm4jknadsey8nep8nukauhc8',
+        );
+
+    });
+
     it('emits derive path in verbose mode', async function () {
 
         const mock = fn();
