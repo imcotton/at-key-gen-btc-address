@@ -3,6 +3,9 @@ Usage: [OPTIONS] <mnemonic sentence>
 
 OPTIONS:
 
+    --root-xprv
+    --extend-xpub
+
     -n, --num            (default 1)
     -a, --account        (default 0)
     -i, --internal       toggle as the change address

@@ -14,7 +14,16 @@ export function parse (args: Iterable<string>) {
         options,
     });
 
-    const { format, account, internal, num, ...rest } = values;
+    const {
+
+        format, account, internal, num,
+
+        'root-xprv': root_xprv,
+        'extend-xpub': extend_xpub,
+
+        ...rest
+
+    } = values;
 
     assert_purpose(format);
 
@@ -33,7 +42,15 @@ export function parse (args: Iterable<string>) {
         : void 0
     ;
 
-    return { format, purpose, account, change, n, sentence, ...rest };
+    return {
+
+        format, purpose, account, change, n, sentence,
+
+        root_xprv, extend_xpub,
+
+        ...rest
+
+    };
 
 }
 
@@ -68,6 +85,14 @@ const options = {
     passphrase: {
         short: 'p',
         type: 'string',
+    },
+
+    'root-xprv': {
+        type: 'boolean',
+    },
+
+    'extend-xpub': {
+        type: 'boolean',
     },
 
     verbose: {
