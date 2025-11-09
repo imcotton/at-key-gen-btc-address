@@ -39,7 +39,7 @@ export function parse (args: Iterable<string>) {
 
     const sentence = positionals.length > 0
         ? positionals.join(' ')
-        : void 0
+        : positionals.at(0)
     ;
 
     return {
