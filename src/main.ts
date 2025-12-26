@@ -3,9 +3,9 @@ import { text } from 'node:stream/consumers';
 
 import { HDKey } from '@scure/bip32';
 import { mnemonicToSeedWebcrypto as to_seed } from '@scure/bip39';
-import { getAddress } from '@scure/btc-signer/payment.js';
 
 import type { Purpose, Result } from './parse.ts';
+import { get_address } from './lib.ts';
 import { USAGE } from './help.ts';
 
 
@@ -91,12 +91,7 @@ export function payment (type: Purpose) {
 
     }) {
 
-        if (key.privateKey == null) {
-            throw new Error('no private key');
-        }
-
-        // deno-lint-ignore no-non-null-assertion
-        const address = getAddress(type, key.privateKey)!;
+        const address = get_address(type, key);
 
         key.wipePrivateData();
 
