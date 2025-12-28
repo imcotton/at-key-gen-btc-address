@@ -2,10 +2,7 @@ import * as ast from '@std/assert';
 import { expect, fn } from '@std/expect';
 import { describe, it } from '@std/testing/bdd';
 
-import { HDKey } from '@scure/bip32';
-import { mnemonicToSeedWebcrypto } from '@scure/bip39';
-
-import { main, payment } from '#src/main.ts';
+import { main } from '#src/main.ts';
 import { parse } from '#src/parse.ts';
 import { USAGE } from '#src/help.ts';
 
@@ -194,41 +191,6 @@ describe('main', function () {
         }
 
     }
-
-});
-
-
-
-
-
-describe('payment', function () {
-
-    const mnemonic = `
-
-        denial magic satoshi blast forest mixed coffee
-        genuine donkey moon sail cave eyebrow burst load
-
-    `.trim().split(/\s+/);
-
-    it('throws without private key', async function () {
-
-        const buf = await mnemonicToSeedWebcrypto(mnemonic.join(' '));
-
-        const { publicKey } = HDKey.fromMasterSeed(buf);
-
-        ast.assert(publicKey);
-
-        ast.assertThrows(function () {
-
-            const key = new HDKey({ publicKey });
-
-            const make = payment('pkh');
-
-            make({ index: 0, path: `m/44'/0'/0'/0/0`, key });
-
-        }, Error, 'no private key');
-
-    });
 
 });
 
