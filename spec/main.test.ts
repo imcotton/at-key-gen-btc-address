@@ -194,3 +194,87 @@ describe('main', function () {
 
 });
 
+
+
+
+
+describe('xprv or xpub', function () {
+
+    const mnemonic = `
+
+        denial magic satoshi blast forest mixed coffee
+        genuine donkey moon sail cave eyebrow burst load
+
+    `.trim().split(/\s+/);
+
+    it('reproduces same address from --xprv and --xpub', async function () {
+
+        const format = 'tr';
+        const account = '42';
+
+        const address = await new Promise<string>(async function (resolve) {
+
+            await main(parse([
+                '--format', format,
+                '--account', account,
+                ...mnemonic,
+            ]), resolve);
+
+        });
+
+        const [ xprv, xpub ] = await Promise.all([
+
+            new Promise<string>(async function (resolve) {
+
+                await main(parse([
+                    '--format', format,
+                    '--account', account,
+                    '--root-xprv',
+                    ...mnemonic,
+                ]), resolve);
+
+            }),
+
+            new Promise<string>(async function (resolve) {
+
+                await main(parse([
+                    '--format', format,
+                    '--account', account,
+                    '--extend-xpub',
+                    ...mnemonic,
+                ]), resolve);
+
+            }),
+
+        ]);
+
+        const arr = await Promise.all([
+
+            new Promise<string>(async function (resolve, rej) {
+
+                await main(parse([
+                    '--format', format,
+                    '--account', account,
+                    '--xprv', xprv,
+                ]), resolve).catch(rej);
+
+            }),
+
+            new Promise<string>(async function (resolve, rej) {
+
+                await main(parse([
+                    '--format', format,
+                    '--account', account,
+                    '--xpub', xpub,
+                ]), resolve).catch(rej);
+
+            }),
+
+        ]);
+
+        ast.assert(arr.every(res => res === address));
+
+    });
+
+});
+

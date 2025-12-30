@@ -95,6 +95,14 @@ const options = {
         type: 'boolean',
     },
 
+    xprv: {
+        type: 'string',
+    },
+
+    xpub: {
+        type: 'string',
+    },
+
     verbose: {
         short: 'v',
         type: 'boolean',
