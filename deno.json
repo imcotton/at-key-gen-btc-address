@@ -24,6 +24,10 @@
     ".": "./src/mod.ts"
   },
   "compilerOptions": {
+    "strict": true,
+    "strictNullChecks": true,
+    "erasableSyntaxOnly": true,
+    "exactOptionalPropertyTypes": true,
     "noUncheckedIndexedAccess": true,
     "lib": [
       "deno.window",
