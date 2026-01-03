@@ -20,6 +20,7 @@ export async function main (
             format, purpose, account, change,
             sentence, passphrase,
             root_xprv, extend_xpub,
+            xprv, xpub,
             n, verbose, help,
 
         }: Result,
@@ -37,15 +38,27 @@ export async function main (
 
     const coin = '0';
 
-    const mnemonic = sentence ?? await text_stdin();
+    const xprv_OR_xpub = xprv || xpub;
 
-    const { root, extend, derive } = await to_seed(mnemonic.trim(), passphrase)
+    const key = xprv_OR_xpub
 
-        .then(HDKey.fromMasterSeed)
+        ? Promise.resolve(xprv_OR_xpub)
+            .then(HDKey.fromExtendedKey)
 
-        .then(make(purpose, coin, account))
+        : Promise.resolve(sentence)
+            .then(otherwise(text_stdin))
+            .then(seed_with(passphrase))
+            .then(HDKey.fromMasterSeed)
 
     ;
+
+    const { root, extend, derive } = await key.then(make({
+
+        purpose, coin, account,
+
+        harden: xpub?.startsWith('xpub') === true,
+
+    }));
 
     if (root_xprv) {
         print(root.privateExtendedKey);
@@ -105,13 +118,23 @@ export function payment (type: Purpose) {
 
 
 
-function make (purpose: string, coin: string, account: string) {
+function make ({ purpose, coin, account, harden = false }: {
 
-    const prefix = `m/${ purpose }'/${ coin }'/${ account }'`;
+        purpose: string,
+        coin: string,
+        account: string,
+        harden?: boolean,
+
+}) {
+
+    const prefix = harden
+        ? `m/-/-/-`
+        : `m/${ purpose }'/${ coin }'/${ account }'`
+    ;
 
     return function (root: HDKey) {
 
-        const extend = root.derive(prefix);
+        const extend = harden ? root : root.derive(prefix);
 
         function * derive (change: number) {
 
