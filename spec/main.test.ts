@@ -194,3 +194,89 @@ describe('main', function () {
 
 });
 
+
+
+
+
+describe('xprv or xpub', function () {
+
+    const mnemonic = `
+
+        denial magic satoshi blast forest mixed coffee
+        genuine donkey moon sail cave eyebrow burst load
+
+    `.trim().split(/\s+/);
+
+    for (const [ type, account ] of [
+
+        [ 'wpkh', 0 ],
+        [  'pkh', 5 ],
+        [   'tr', 9 ],
+
+    ] as const) {
+
+        it(`same on   -f ${ type }   -a ${ account }`, async function () {
+
+            const init = [
+                '--format', type,
+                '--account', account.toString(),
+            ];
+
+            const address = await new Promise<string>(async function (res) {
+
+                await main(parse(init.concat([
+                    ...mnemonic,
+                ])), res);
+
+            });
+
+            const [ xprv, xpub ] = await Promise.all([
+
+                new Promise<string>(async function (res) {
+
+                    await main(parse(init.concat([
+                        '--root-xprv',
+                        ...mnemonic,
+                    ])), res);
+
+                }),
+
+                new Promise<string>(async function (res) {
+
+                    await main(parse(init.concat([
+                        '--extend-xpub',
+                        ...mnemonic,
+                    ])), res);
+
+                }),
+
+            ]);
+
+            const arr = await Promise.all([
+
+                new Promise<string>(async function (res, rej) {
+
+                    await main(parse(init.concat([
+                        '--xprv', xprv,
+                    ])), res).catch(rej);
+
+                }),
+
+                new Promise<string>(async function (res, rej) {
+
+                    await main(parse(init.concat([
+                        '--xpub', xpub,
+                    ])), res).catch(rej);
+
+                }),
+
+            ]);
+
+            ast.assert(arr.every(res => res === address));
+
+        });
+
+    }
+
+});
+
