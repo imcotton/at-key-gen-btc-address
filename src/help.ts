@@ -3,11 +3,11 @@ Usage: [OPTIONS] <mnemonic sentence>
 
 OPTIONS:
 
-    --root-xprv
-    --xprv
+    --root-xprv          export the xprv (Extended Private Key)
+    --xprv               <xprv from above>
 
-    --extend-xpub
-    --xpub
+    --extend-xpub        export the xpub (Extended Public Key)
+    --xpub               <xpub from above>
 
     -n, --num            (default 1)
     -a, --account        (default 0)
