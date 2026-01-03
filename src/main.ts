@@ -2,7 +2,7 @@ import { stdin } from 'node:process';
 import { text } from 'node:stream/consumers';
 
 import { HDKey } from '@scure/bip32';
-import { mnemonicToSeedWebcrypto as to_seed } from '@scure/bip39';
+import { mnemonicToSeedWebcrypto } from '@scure/bip39';
 
 import type { Purpose, Result } from './parse.ts';
 import { get_address } from './lib.ts';
@@ -144,6 +144,19 @@ function make (purpose: string, coin: string, account: string) {
         return { root, extend, derive };
 
     };
+
+}
+
+
+
+
+
+function seed_with (passphrase?: string) {
+
+    return (mnemonic: string) => mnemonicToSeedWebcrypto(
+        mnemonic.trim(),
+        passphrase,
+    );
 
 }
 
