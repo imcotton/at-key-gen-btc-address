@@ -151,6 +151,16 @@ function make (purpose: string, coin: string, account: string) {
 
 
 
+function otherwise <T> (f: IO_or_Task<T>) {
+
+    return (x?: T) => x ?? f();
+
+}
+
+
+
+
+
 type         IO <T> = () => T;
 type       Task <T> = () => Promise<T>;
 type IO_or_Task <T> = IO<T> | Task<T>;
