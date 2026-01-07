@@ -18,8 +18,11 @@ export function parse (args: Iterable<string>) {
 
         format, account, internal, num,
 
-        'root-xprv': root_xprv,
-        'extend-xpub': extend_xpub,
+        'export-xprv': export_xprv,
+        'import-xprv': import_xprv,
+
+        'export-xpub': export_xpub,
+        'import-xpub': import_xpub,
 
         ...rest
 
@@ -46,7 +49,8 @@ export function parse (args: Iterable<string>) {
 
         format, purpose, account, change, n, sentence,
 
-        root_xprv, extend_xpub,
+        export_xprv, import_xprv,
+        export_xpub, import_xpub,
 
         ...rest
 
@@ -87,19 +91,19 @@ const options = {
         type: 'string',
     },
 
-    'root-xprv': {
+    'export-xprv': {
         type: 'boolean',
     },
 
-    'extend-xpub': {
+    'export-xpub': {
         type: 'boolean',
     },
 
-    xprv: {
+    'import-xprv': {
         type: 'string',
     },
 
-    xpub: {
+    'import-xpub': {
         type: 'string',
     },
 
