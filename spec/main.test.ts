@@ -19,12 +19,12 @@ describe('main', function () {
 
     `.trim().split(/\s+/);
 
-    it('supports --root-xprv --format wpkh', async function () {
+    it('supports --export-xprv --format wpkh', async function () {
 
         const res = await new Promise<string>(async function (resolve) {
 
             await main(parse([
-                '--root-xprv', '--format=wpkh',
+                '--export-xprv', '--format=wpkh',
                 ...mnemonic,
             ]), resolve);
 
@@ -39,12 +39,12 @@ describe('main', function () {
 
     });
 
-    it('supports --extend-xpub --format pkh', async function () {
+    it('supports --export-xpub --format pkh', async function () {
 
         const res = await new Promise<string>(async function (resolve) {
 
             await main(parse([
-                '--extend-xpub', '--format=pkh',
+                '--export-xpub', '--format=pkh',
                 ...mnemonic,
             ]), resolve);
 
@@ -59,12 +59,12 @@ describe('main', function () {
 
     });
 
-    it('supports --extend-xpub --format tr', async function () {
+    it('supports --export-xpub --format tr', async function () {
 
         const res = await new Promise<string>(async function (resolve) {
 
             await main(parse([
-                '--extend-xpub', '--format=tr',
+                '--export-xpub', '--format=tr',
                 ...mnemonic,
             ]), resolve);
 
@@ -235,7 +235,7 @@ describe('xprv or xpub', function () {
                 new Promise<string>(async function (res) {
 
                     await main(parse(init.concat([
-                        '--root-xprv',
+                        '--export-xprv',
                         ...mnemonic,
                     ])), res);
 
@@ -244,7 +244,7 @@ describe('xprv or xpub', function () {
                 new Promise<string>(async function (res) {
 
                     await main(parse(init.concat([
-                        '--extend-xpub',
+                        '--export-xpub',
                         ...mnemonic,
                     ])), res);
 
@@ -257,7 +257,7 @@ describe('xprv or xpub', function () {
                 new Promise<string>(async function (res, rej) {
 
                     await main(parse(init.concat([
-                        '--xprv', xprv,
+                        '--import-xprv', xprv,
                     ])), res).catch(rej);
 
                 }),
@@ -265,7 +265,7 @@ describe('xprv or xpub', function () {
                 new Promise<string>(async function (res, rej) {
 
                     await main(parse(init.concat([
-                        '--xpub', xpub,
+                        '--import-xpub', xpub,
                     ])), res).catch(rej);
 
                 }),
