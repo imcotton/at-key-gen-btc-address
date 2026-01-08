@@ -19,8 +19,8 @@ export async function main (
 
             format, purpose, account, change,
             sentence, passphrase,
-            root_xprv, extend_xpub,
-            xprv, xpub,
+            export_xprv, import_xprv,
+            export_xpub, import_xpub,
             n, verbose, help,
 
         }: Result,
@@ -38,7 +38,7 @@ export async function main (
 
     const coin = '0';
 
-    const xprv_OR_xpub = xprv || xpub;
+    const xprv_OR_xpub = import_xprv || import_xpub;
 
     const key = xprv_OR_xpub
 
@@ -56,17 +56,17 @@ export async function main (
 
         purpose, coin, account,
 
-        harden: xpub?.startsWith('xpub') === true,
+        harden: import_xpub?.startsWith('xpub') === true,
 
     }));
 
-    if (root_xprv) {
+    if (export_xprv) {
         print(root.privateExtendedKey);
         root.wipePrivateData();
         return;
     }
 
-    if (extend_xpub) {
+    if (export_xpub) {
         print(extend.publicExtendedKey);
         root.wipePrivateData();
         return;
