@@ -1,6 +1,3 @@
-import { stdin } from 'node:process';
-import { text } from 'node:stream/consumers';
-
 import { HDKey } from '@scure/bip32';
 import { mnemonicToSeedWebcrypto } from '@scure/bip39';
 
@@ -27,7 +24,7 @@ export async function main (
 
         print = console.log,
 
-        text_stdin = (() => text(stdin)) as IO_or_Task<string>,
+        text_stdin?: IO_or_Task<string>,
 
 // deno-coverage-ignore-stop
 ) {
