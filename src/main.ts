@@ -187,9 +187,19 @@ function seed_with (passphrase?: string) {
 
 
 
-function otherwise <T> (f: IO_or_Task<T>) {
+function otherwise <T> (f?: IO_or_Task<T>) {
 
-    return (x?: T) => x ?? f();
+    return function (x?: T) {
+
+        const res = x ?? f?.();
+
+        if (res == null) {
+            throw new Error('no result');
+        }
+
+        return res;
+
+    };
 
 }
 
