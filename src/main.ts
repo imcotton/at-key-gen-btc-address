@@ -94,7 +94,7 @@ export async function main (
 
 
 
-export function payment (type: Purpose) {
+function payment (type: Purpose) {
 
     return function ({ key, path, index }: {
 
