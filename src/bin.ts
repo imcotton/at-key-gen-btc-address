@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
-import { argv } from 'node:process';
+import { argv, stdin } from 'node:process';
+import { text } from 'node:stream/consumers';
+
 import { main } from './main.ts';
 import { parse } from './parse.ts';
 
@@ -8,5 +10,5 @@ import { parse } from './parse.ts';
 
 
 
-main(parse(argv.slice(2)));
+main(parse(argv.slice(2)), console.log, () => text(stdin));
 
