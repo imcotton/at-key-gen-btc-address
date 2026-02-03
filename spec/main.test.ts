@@ -169,6 +169,12 @@ describe('main', function () {
 
     });
 
+    it('throws when no args nor stdin', async function () {
+
+        await ast.assertRejects(() => main(parse([])));
+
+    });
+
     {
 
         const args = [
