@@ -37,7 +37,7 @@ export async function main (
 
     const xprv_OR_xpub = import_xprv || import_xpub;
 
-    const key = xprv_OR_xpub
+    const root = await (xprv_OR_xpub
 
         ? Promise.resolve(xprv_OR_xpub)
             .then(HDKey.fromExtendedKey)
@@ -47,15 +47,17 @@ export async function main (
             .then(seed_with(passphrase))
             .then(HDKey.fromMasterSeed)
 
-    ;
+    );
 
-    const { root, extend, derive } = await key.then(make({
+    const { extend, derive } = make({
+
+        root,
 
         purpose, coin, account,
 
         harden: import_xpub?.startsWith('xpub') === true,
 
-    }));
+    });
 
     if (export_xprv) {
         print(root.privateExtendedKey);
@@ -115,8 +117,9 @@ function payment (type: Purpose) {
 
 
 
-function make ({ purpose, coin, account, harden = false }: {
+function make ({ root, purpose, coin, account, harden = false }: {
 
+        root: HDKey,
         purpose: string,
         coin: string,
         account: string,
@@ -129,41 +132,37 @@ function make ({ purpose, coin, account, harden = false }: {
         : `m/${ purpose }'/${ coin }'/${ account }'`
     ;
 
-    return function (root: HDKey) {
+    const extend = harden ? root : root.derive(prefix);
 
-        const extend = harden ? root : root.derive(prefix);
+    function * derive (change: number) {
 
-        function * derive (change: number) {
+        const extend_change = extend.deriveChild(change);
 
-            const extend_change = extend.deriveChild(change);
+        let index = 0;
 
-            let index = 0;
+        try {
 
-            try {
+            while (true) {
 
-                while (true) {
+                const path = [ prefix, change, index ].join('/');
 
-                    const path = [ prefix, change, index ].join('/');
+                const key = extend_change.deriveChild(index);
 
-                    const key = extend_change.deriveChild(index);
+                yield { key, path, index };
 
-                    yield { key, path, index };
-
-                    index += 1;
-
-                }
-
-            } finally {
-
-                root.wipePrivateData();
+                index += 1;
 
             }
 
+        } finally {
+
+            root.wipePrivateData();
+
         }
 
-        return { root, extend, derive };
+    }
 
-    };
+    return { extend, derive };
 
 }
 
