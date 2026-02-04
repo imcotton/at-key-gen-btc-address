@@ -47,6 +47,12 @@ export async function main (
 
     );
 
+    if (export_xprv) {
+        print(root.privateExtendedKey);
+        root.wipePrivateData();
+        return;
+    }
+
     const { extend, derive } = make({
 
         root,
@@ -56,12 +62,6 @@ export async function main (
         harden: import_xpub?.startsWith('xpub') === true,
 
     });
-
-    if (export_xprv) {
-        print(root.privateExtendedKey);
-        root.wipePrivateData();
-        return;
-    }
 
     if (export_xpub) {
         print(extend.publicExtendedKey);
