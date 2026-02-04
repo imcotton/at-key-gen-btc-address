@@ -54,13 +54,9 @@ export async function main (
     }
 
     const { extend, derive } = make({
-
         root,
-
         purpose, coin, account,
-
         harden: import_xpub?.startsWith('xpub') === true,
-
     });
 
     if (export_xpub) {
