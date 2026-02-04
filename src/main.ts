@@ -65,9 +65,9 @@ export async function main (
         return;
     }
 
-    const entries = derive(change).map(payment(format));
+    const entries = derive(change).take(n).map(payment(format));
 
-    for (const { path, address } of entries.take(n)) {
+    for (const { path, address } of entries) {
 
         if (verbose) {
 
