@@ -4,7 +4,7 @@ import assert_strict from 'node:assert/strict';
 import { HDKey } from '@scure/bip32';
 import { mnemonicToSeedSync } from '@scure/bip39';
 
-import { get_address } from '#src/lib.ts';
+import { get_address } from '../src/lib.ts';
 
 
 
