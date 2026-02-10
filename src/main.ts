@@ -130,11 +130,11 @@ function make ({ root, purpose, coin, account, harden = false }: {
 
     function * derive (change: number) {
 
-        const extend_change = extend.deriveChild(change);
-
         let index = 0;
 
         try {
+
+            const extend_change = extend.deriveChild(change);
 
             while (true) {
 
