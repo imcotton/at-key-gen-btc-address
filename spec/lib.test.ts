@@ -1,5 +1,6 @@
+import { describe, it } from 'node:test';
+
 import * as ast from '@std/assert';
-import { describe, it } from '@std/testing/bdd';
 
 import { HDKey } from '@scure/bip32';
 import { mnemonicToSeedSync } from '@scure/bip39';

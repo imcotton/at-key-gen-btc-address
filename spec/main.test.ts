@@ -1,6 +1,7 @@
+import { describe, it } from 'node:test';
+
 import * as ast from '@std/assert';
 import { expect, fn } from '@std/expect';
-import { describe, it } from '@std/testing/bdd';
 
 import { main } from '#src/main.ts';
 import { parse } from '#src/parse.ts';
