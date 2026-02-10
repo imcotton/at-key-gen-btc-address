@@ -136,7 +136,7 @@ function make ({ root, purpose, coin, account, harden = false }: {
 
             const extend_change = extend.deriveChild(change);
 
-            while (true) {
+            while (index < 2 ** 32) {
 
                 const path = [ prefix, change, index ].join('/');
 
