@@ -1,0 +1,27 @@
+{
+  "name": "gen-btc-address",
+  "version": "0.0.0-VERSION",
+  "description": "generate BTC wallet address from mnemonic",
+  "type": "module",
+  "license": "MIT",
+  "sideEffects": false,
+  "bin": "./dist/bin.js",
+  "exports": {
+    "./bin.js": "./dist/bin.js"
+  },
+  "files": [
+    "./dist/*.js"
+  ],
+  "dependencies": {
+    "@scure/bip32": "~2.0.1",
+    "@scure/bip39": "~2.0.1",
+    "@scure/btc-signer": "~2.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "~22.19.11",
+    "typescript": "~5.9.3"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
