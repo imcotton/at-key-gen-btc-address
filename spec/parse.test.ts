@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test';
 import assert_strict from 'node:assert/strict';
 
-import { parse } from '#src/parse.ts';
+import { parse } from '../src/parse.ts';
 
 
 

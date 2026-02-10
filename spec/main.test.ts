@@ -1,9 +1,9 @@
 import { describe, it, mock } from 'node:test';
 import assert_strict from 'node:assert/strict';
 
-import { main } from '#src/main.ts';
-import { parse } from '#src/parse.ts';
-import { USAGE } from '#src/help.ts';
+import { main } from '../src/main.ts';
+import { parse } from '../src/parse.ts';
+import { USAGE } from '../src/help.ts';
 
 
 
