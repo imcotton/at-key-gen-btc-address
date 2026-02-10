@@ -1,7 +1,5 @@
-import { describe, it } from 'node:test';
-
-import * as ast from '@std/assert';
-import { expect, fn } from '@std/expect';
+import { describe, it, mock } from 'node:test';
+import assert_strict from 'node:assert/strict';
 
 import { main } from '#src/main.ts';
 import { parse } from '#src/parse.ts';
@@ -31,7 +29,7 @@ describe('main', function () {
 
         });
 
-        ast.assertEquals(res, `
+        assert_strict.equal(res, `
 
             xprv9s21ZrQH143K32FdKprpNdL2SiDEnnd7qaZUWj4rchuFCRgkK4J
             ZfJYxgn64Yq89TYGXBmhc9Xf6ihrkfYrgNipAfGxr7bpMjyWZ6tKFZEn
@@ -51,7 +49,7 @@ describe('main', function () {
 
         });
 
-        ast.assertEquals(res, `
+        assert_strict.equal(res, `
 
             xpub6D8mSepz3yq3Pwfrqy1wppYcXPXgLWZAG7dXss4AgpuzgpC1TB2
             c1G8m7ZNFhM5nTDfgcaHPSzgQwTQHzFJDDR7VqEsBjREeyfkfFLna2Tz
@@ -71,7 +69,7 @@ describe('main', function () {
 
         });
 
-        ast.assertEquals(res, `
+        assert_strict.equal(res, `
 
             xpub6DMhkbAoDSmHLg79EB62G3hevgNgA6mdJDzRrhpZjALkbZygPW9
             PycSLpYMxQfsoRqYL817pfVUF5rmP1CjhvVW1gT28FcG4LfNXcDHfjqS
@@ -82,32 +80,32 @@ describe('main', function () {
 
     it('supports set --internal flag', async function () {
 
-        const mock = fn();
+        const res = mock.fn();
 
-        await main(parse([ '-v', '--internal', ...mnemonic ]), mock as never);
+        await main(parse([ '-v', '--internal', ...mnemonic ]), res);
 
-        expect(mock).toHaveBeenCalledWith(
+        assert_strict.deepEqual(res.mock.calls.at(0)?.arguments, [
             `m/84'/0'/0'/1/0`,
             'bc1q6lrmdkjjzh83qhfm4jknadsey8nep8nukauhc8',
-        );
+        ]);
 
     });
 
     it('emits derive path in verbose mode', async function () {
 
-        const mock = fn();
+        const res = mock.fn();
 
         await main(parse([
             '--verbose',
             '--account', '9',
             '--format', 'pkh',
             ...mnemonic,
-        ]), mock as never);
+        ]), res);
 
-        expect(mock).toHaveBeenCalledWith(
+        assert_strict.deepEqual(res.mock.calls.at(0)?.arguments, [
             `m/44'/0'/9'/0/0`,
             '16ikowat1deoZjwNnpDvLrPTvJiu3As4xB',
-        );
+        ]);
 
     });
 
@@ -123,29 +121,23 @@ describe('main', function () {
 
         });
 
-        ast.assertEquals(res, 'bc1qf7vr7lxxeh40sknwx4a5wdm8cmgl03j5r7dfq8');
+        assert_strict.equal(res, 'bc1qf7vr7lxxeh40sknwx4a5wdm8cmgl03j5r7dfq8');
 
     });
 
     it('supports -n3 emit', async function () {
 
-        const mock = fn();
+        const res = mock.fn();
 
-        await main(parse([ '-n3', '-f', 'tr', ...mnemonic ]), mock as never);
+        await main(parse([ '-n3', '-f', 'tr', ...mnemonic ]), res);
 
-        [
-
+        assert_strict.deepEqual(res.mock.calls.flatMap(c => c.arguments), [
             'bc1pnc0pk9daxk9a7h5kqfuj24zrxu9ujm9gjwes7mqghvzj26jt9wnqeggy7g',
             'bc1pyf2c9jt7ek0tlaa6js8v43cm9vu540lrpzfk7ynflhcdajgcf3mqk6sgqy',
             'bc1pklla86akkfspsfr5exn3lu29s3ypfatlx33uavx0kal6tueh26jq7tld2a',
+        ]);
 
-        ].forEach((addr, i) => {
-
-            expect(mock).toHaveBeenNthCalledWith(i + 1, addr);
-
-        });
-
-        expect(mock).toHaveBeenCalledTimes(3);
+        assert_strict.equal(res.mock.callCount(), 3);
 
     });
 
@@ -165,14 +157,14 @@ describe('main', function () {
 
         const address = 'bc1qetljrh848kv8vyqwsvrptju4ghdxn6w367amma';
 
-        ast.assertStrictEquals(args, address);
-        ast.assertStrictEquals(stdin, address);
+        assert_strict.equal(args, address);
+        assert_strict.equal(stdin, address);
 
     });
 
     it('throws when no args nor stdin', async function () {
 
-        await ast.assertRejects(() => main(parse([])));
+        await assert_strict.rejects(() => main(parse([])));
 
     });
 
@@ -191,7 +183,7 @@ describe('main', function () {
                     await main(parse(x), resolve);
                 });
 
-                ast.assertStrictEquals(res, USAGE);
+                assert_strict.equal(res, USAGE);
 
             });
 
@@ -279,7 +271,7 @@ describe('xprv or xpub', function () {
 
             ]);
 
-            ast.assert(arr.every(res => res === address));
+            assert_strict(arr.every(res => res === address));
 
         });
 
