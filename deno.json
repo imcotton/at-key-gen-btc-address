@@ -10,10 +10,7 @@
 
     "@scure/bip32":           "jsr:@scure/bip32@~2.0.1",
     "@scure/bip39":           "jsr:@scure/bip39@~2.0.1",
-    "@scure/btc-signer": "jsr:@scure/btc-signer@~2.0.1",
-
-    "@std/assert":   "jsr:@std/assert@1",
-    "@std/expect":   "jsr:@std/expect@1"
+    "@scure/btc-signer": "jsr:@scure/btc-signer@~2.0.1"
 
   },
   "tasks": {

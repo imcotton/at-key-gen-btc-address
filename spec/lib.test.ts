@@ -1,6 +1,5 @@
 import { describe, it } from 'node:test';
-
-import * as ast from '@std/assert';
+import assert_strict from 'node:assert/strict';
 
 import { HDKey } from '@scure/bip32';
 import { mnemonicToSeedSync } from '@scure/bip39';
@@ -35,10 +34,10 @@ describe('get_address', function () {
 
         it(`for type: ${ type }`, function () {
 
-            ast.assertEquals(get_address(type, key), addr, type);
-            ast.assertEquals(get_address(type, piv), addr, type);
-            ast.assertEquals(get_address(type, ext), addr, type);
-            ast.assertEquals(get_address(type, pub), addr, type);
+            assert_strict.equal(get_address(type, key), addr, type);
+            assert_strict.equal(get_address(type, piv), addr, type);
+            assert_strict.equal(get_address(type, ext), addr, type);
+            assert_strict.equal(get_address(type, pub), addr, type);
 
         });
 
@@ -46,7 +45,7 @@ describe('get_address', function () {
 
     it('throws on invalid HDKey', function () {
 
-        ast.assertThrows(function () {
+        assert_strict.throws(function () {
 
             get_address('tr', {});
 
@@ -56,7 +55,7 @@ describe('get_address', function () {
 
     it('throws on unknown type', function () {
 
-        ast.assertThrows(function () {
+        assert_strict.throws(function () {
 
             // @ts-expect-error assert throws
             get_address('wat', key);

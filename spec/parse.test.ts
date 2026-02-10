@@ -1,6 +1,5 @@
 import { describe, it } from 'node:test';
-
-import * as ast from '@std/assert';
+import assert_strict from 'node:assert/strict';
 
 import { parse } from '#src/parse.ts';
 
@@ -12,21 +11,21 @@ describe('parse', function () {
 
     it('throws on invalid format', function () {
 
-        ast.assertThrows(() => parse([       '-f', 'wat' ]));
-        ast.assertThrows(() => parse([ '--format', 'wat' ]));
+        assert_strict.throws(() => parse([       '-f', 'wat' ]));
+        assert_strict.throws(() => parse([ '--format', 'wat' ]));
 
     });
 
     it('throws on invalid account', function () {
 
-        ast.assertThrows(() => parse([        '-a', 'wat' ]));
-        ast.assertThrows(() => parse([ '--account', '4.2' ]));
+        assert_strict.throws(() => parse([        '-a', 'wat' ]));
+        assert_strict.throws(() => parse([ '--account', '4.2' ]));
 
     });
 
     it('throws on unknown options', function () {
 
-        ast.assertThrows(() => parse([ '--wat' ]));
+        assert_strict.throws(() => parse([ '--wat' ]));
 
     });
 
