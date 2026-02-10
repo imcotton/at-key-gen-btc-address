@@ -44,3 +44,41 @@ jobs:
           files: coverage/lcov.info
           use_oidc: true
 
+
+
+  test-npm:
+
+    runs-on: ubuntu-slim
+    timeout-minutes: 3
+
+    steps:
+
+      - name: Setup repo
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Setup node
+        uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+        with:
+          node-version: v24
+
+      - name: Move package.json
+        run: cp tmp-package.json package.json
+
+      - name: Install
+        run: npm install --no-{fund,package-lock}
+
+      - name: Tests
+        run: node --test --experimental-test-coverage
+
+      - name: Build
+        run: npx tsc ./src/*.ts
+                     --outDir ./dist
+                     --lib    esnext
+                     --target es2023
+                     --module preserve
+                     --strict
+                     --erasableSyntaxOnly
+                     --rewriteRelativeImportExtensions
+
+      - name: Publish --dry-run
+        run: npm publish --access=public --tag=next --dry-run
