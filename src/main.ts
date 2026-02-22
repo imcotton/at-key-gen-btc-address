@@ -1,7 +1,7 @@
 import { HDKey } from '@scure/bip32';
 import { mnemonicToSeedWebcrypto } from '@scure/bip39';
 
-import type { Purpose, Result } from './parse.ts';
+import type { Result } from './parse.ts';
 import { get_address } from './lib.ts';
 import { USAGE } from './help.ts';
 
@@ -65,9 +65,11 @@ export async function main (
         return;
     }
 
-    const entries = derive(change).take(n).map(payment(format));
+    for (const { key, path } of derive(change).take(n)) {
 
-    for (const { path, address } of entries) {
+        const address = get_address(format, key);
+
+        key.wipePrivateData();
 
         if (verbose) {
 
@@ -80,30 +82,6 @@ export async function main (
         }
 
     }
-
-}
-
-
-
-
-
-function payment (type: Purpose) {
-
-    return function ({ key, path, index }: {
-
-            key: HDKey,
-            path: string,
-            index: number,
-
-    }) {
-
-        const address = get_address(type, key);
-
-        key.wipePrivateData();
-
-        return { index, path, address };
-
-    };
 
 }
 
