@@ -1,7 +1,7 @@
 import { HDKey } from '@scure/bip32';
 import { mnemonicToSeedWebcrypto } from '@scure/bip39';
 
-import type { Result } from './parse.ts';
+import type { Result, Purpose } from './parse.ts';
 import { get_address } from './lib.ts';
 import { USAGE } from './help.ts';
 
@@ -65,7 +65,9 @@ export async function main (
         return;
     }
 
-    for (const { key, path } of derive(change).take(n)) {
+    for (let index = 0; index < n; index += 1) {
+
+        const { key, path } = derive(change, index);
 
         const address = get_address(format, key);
 
@@ -106,25 +108,15 @@ function make ({ root, purpose, coin, account, harden = false }: {
 
     const extend = harden ? root : root.derive(prefix);
 
-    function * derive (change: number) {
-
-        let index = 0;
+    function derive (change: number, index: number) {
 
         try {
 
-            const extend_change = extend.deriveChild(change);
+            const path = [ prefix, change, index ].join('/');
 
-            while (index < 2 ** 32) {
+            const key = extend.deriveChild(change).deriveChild(index);
 
-                const path = [ prefix, change, index ].join('/');
-
-                const key = extend_change.deriveChild(index);
-
-                yield { key, path, index };
-
-                index += 1;
-
-            }
+            return { key, path };
 
         } finally {
 
