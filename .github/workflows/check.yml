@@ -73,7 +73,7 @@ jobs:
       - name: Build
         run: npx tsc ./src/*.ts
                      --outDir ./dist
-                     --lib    esnext
+                     --lib    es2023
                      --target es2023
                      --module preserve
                      --strict
