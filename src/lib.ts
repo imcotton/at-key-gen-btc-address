@@ -53,6 +53,21 @@ export function get_address (
 
 
 
+export function get_address_by (
+
+        type: Format,
+        network = NETWORK,
+
+): (key: HDKey) => string {
+
+    return key => get_address(type, key, network);
+
+}
+
+
+
+
+
 function address (type: Format) {
 
     return type === 'tr' ? pubSchnorr : pubECDSA;
