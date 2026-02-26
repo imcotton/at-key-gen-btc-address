@@ -11,6 +11,8 @@ type Bytes = Uint8Array;
 
 type Format = 'pkh' | 'wpkh' | 'tr';
 
+type HDKey = PRR<'publicKey' | 'privateKey', Bytes | null | undefined>;
+
 
 
 
@@ -18,7 +20,7 @@ type Format = 'pkh' | 'wpkh' | 'tr';
 export function get_address (
 
         type: Format,
-        key: PRR<'publicKey' | 'privateKey', Bytes | null | undefined>,
+        key: HDKey,
         network = NETWORK,
 
 ): string {
