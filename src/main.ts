@@ -1,8 +1,8 @@
 import { HDKey } from '@scure/bip32';
 import { mnemonicToSeedWebcrypto } from '@scure/bip39';
 
-import type { Result, Purpose } from './parse.ts';
-import { get_address } from './lib.ts';
+import type { Result } from './parse.ts';
+import { get_address_by } from './lib.ts';
 import { USAGE } from './help.ts';
 
 
@@ -65,11 +65,13 @@ export async function main (
         return;
     }
 
+    const convert = get_address_by(format);
+
     for (let index = 0; index < n; index += 1) {
 
         const { key, path } = derive(change, index);
 
-        const address = get_address(format, key);
+        const address = convert(key);
 
         key.wipePrivateData();
 
