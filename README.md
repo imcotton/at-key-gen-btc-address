@@ -1,6 +1,7 @@
 # `gen-btc-address`
 
 [![jsr](https://jsr.io/badges/@key/gen-btc-address)](https://jsr.io/@key/gen-btc-address)
+[![npm](https://badgen.net/npm/v/gen-btc-address)](https://www.npmjs.com/package/gen-btc-address)
 [![codecov](https://codecov.io/gh/imcotton/at-key-gen-btc-address/graph/badge.svg)](https://codecov.io/gh/imcotton/at-key-gen-btc-address)
 
 > CLI to generate BTC wallet address from mnemonic
