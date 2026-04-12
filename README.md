@@ -12,9 +12,26 @@
 
 ## CLI
 
+recommend using **Deno**:
+
 ```
-deno run jsr:@key/gen-btc-address
+deno      npm:gen-btc-address
+deno jsr:@key/gen-btc-address
 ```
+
+<details>
+
+<summary>also available from: npx, bun, pnpm, yarn etc...</summary>
+
+```
+npx      gen-btc-address
+bun    x gen-btc-address
+pnpm dlx gen-btc-address
+yarn dlx gen-btc-address
+```
+</details>
+
+
 
     Usage: [OPTIONS] <mnemonic sentence>
 
