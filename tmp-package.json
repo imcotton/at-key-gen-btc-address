@@ -5,6 +5,10 @@
   "type": "module",
   "license": "MIT",
   "sideEffects": false,
+  "repository": {
+    "url": "https://github.com/imcotton/at-key-gen-btc-address.git",
+    "type": "git"
+  },
   "bin": "./dist/bin.js",
   "exports": {
     "./bin.js": "./dist/bin.js"
