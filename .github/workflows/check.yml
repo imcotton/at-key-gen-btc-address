@@ -78,6 +78,7 @@ jobs:
                      --target es2023
                      --module preserve
                      --strict
+                     --isolatedModules
                      --erasableSyntaxOnly
                      --rewriteRelativeImportExtensions
 
