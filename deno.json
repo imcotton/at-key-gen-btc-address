@@ -5,9 +5,9 @@
   "description": "CLI to generate BTC wallet address from mnemonic",
   "license": "MIT",
   "imports": {
-    "@scure/bip32":           "jsr:@scure/bip32@~2.0.1",
-    "@scure/bip39":           "jsr:@scure/bip39@~2.0.1",
-    "@scure/btc-signer": "jsr:@scure/btc-signer@~2.0.1"
+    "@scure/bip32":           "jsr:@scure/bip32@~2.2.0",
+    "@scure/bip39":           "jsr:@scure/bip39@~2.2.0",
+    "@scure/btc-signer": "jsr:@scure/btc-signer@~2.2.0"
   },
   "tasks": {
     "spec": "deno test ./spec"
