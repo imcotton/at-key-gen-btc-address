@@ -34,16 +34,16 @@ function gen (
         throw new Error('invalid HDKey');
     }
 
-    if (type === 'tr') {
-        return p2tr(output(pub), void 0, network);
+    if (type === 'wpkh') {
+        return p2wpkh(pub, network);
     }
 
     if (type === 'pkh') {
         return p2pkh(pub, network);
     }
 
-    if (type === 'wpkh') {
-        return p2wpkh(pub, network);
+    if (type === 'tr') {
+        return p2tr(output(pub), void 0, network);
     }
 
     throw new Error(`getAddress: unknown type=${ type }`);
