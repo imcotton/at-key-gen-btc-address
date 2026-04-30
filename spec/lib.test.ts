@@ -4,13 +4,13 @@ import assert_strict from 'node:assert/strict';
 import { HDKey } from '@scure/bip32';
 import { mnemonicToSeedSync } from '@scure/bip39';
 
-import { get_address } from '../src/lib.ts';
+import { get_address_by } from '../src/lib.ts';
 
 
 
 
 
-describe('get_address', function () {
+describe('get_address_by', function () {
 
     const buf = mnemonicToSeedSync(`
 
@@ -34,10 +34,13 @@ describe('get_address', function () {
 
         it(`for type: ${ type }`, function () {
 
-            assert_strict.equal(get_address(type, key), addr, type);
-            assert_strict.equal(get_address(type, piv), addr, type);
-            assert_strict.equal(get_address(type, ext), addr, type);
-            assert_strict.equal(get_address(type, pub), addr, type);
+            const f = get_address_by(type);
+
+            for (const x of [ key, piv, ext, pub ]) {
+
+                assert_strict.equal(f(x), addr, type);
+
+            }
 
         });
 
@@ -45,9 +48,11 @@ describe('get_address', function () {
 
     it('throws on invalid HDKey', function () {
 
+        const f = get_address_by('tr');
+
         assert_strict.throws(function () {
 
-            get_address('tr', {});
+            f({});
 
         }, Error, 'invalid HDKey');
 
@@ -55,10 +60,12 @@ describe('get_address', function () {
 
     it('throws on unknown type', function () {
 
+        // @ts-expect-error assert throws
+        const f = get_address_by('wat');
+
         assert_strict.throws(function () {
 
-            // @ts-expect-error assert throws
-            get_address('wat', key);
+            f(key);
 
         }, Error, 'getAddress: unknown type=wat');
 
