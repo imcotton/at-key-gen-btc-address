@@ -1,5 +1,6 @@
 import { p2tr, p2pkh, p2wpkh } from '@scure/btc-signer/payment.js';
 import { NETWORK, pubECDSA, pubSchnorr } from '@scure/btc-signer/utils.js';
+import type { BTC_NETWORK } from '@scure/btc-signer/utils.js';
 
 
 
@@ -21,7 +22,7 @@ function gen (
 
         type: Format,
         key: HDKey,
-        network = NETWORK,
+        network: BTC_NETWORK,
 
 ) {
 
