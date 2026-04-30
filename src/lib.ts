@@ -17,13 +17,13 @@ type HDKey = PRR<'publicKey' | 'privateKey', Bytes | null | undefined>;
 
 
 
-export function get_address (
+function gen (
 
         type: Format,
         key: HDKey,
         network = NETWORK,
 
-): string {
+) {
 
     const convert = address(type);
 
@@ -34,15 +34,15 @@ export function get_address (
     }
 
     if (type === 'tr') {
-        return p2tr(output(pub), void 0, network).address;
+        return p2tr(output(pub), void 0, network);
     }
 
     if (type === 'pkh') {
-        return p2pkh(pub, network).address;
+        return p2pkh(pub, network);
     }
 
     if (type === 'wpkh') {
-        return p2wpkh(pub, network).address;
+        return p2wpkh(pub, network);
     }
 
     throw new Error(`getAddress: unknown type=${ type }`);
@@ -60,7 +60,7 @@ export function get_address_by (
 
 ): (key: HDKey) => string {
 
-    return key => get_address(type, key, network);
+    return key => gen(type, key, network).address;
 
 }
 
