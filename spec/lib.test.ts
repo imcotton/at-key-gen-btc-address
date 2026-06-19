@@ -54,7 +54,7 @@ describe('get_address_by', function () {
 
             f({});
 
-        }, Error, 'invalid HDKey');
+        }, /invalid HDKey/);
 
     });
 
@@ -67,7 +67,7 @@ describe('get_address_by', function () {
 
             f(key);
 
-        }, Error, 'getAddress: unknown type=wat');
+        }, /getAddress: unknown type=wat/);
 
     });
 
