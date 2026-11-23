@@ -64,7 +64,6 @@ export async function main (
     const { extend, derive } = make({
         root,
         purpose, coin, account,
-        harden: import_xpub?.startsWith('xpub') === true,
     });
 
     if (export_xpub) {
@@ -101,15 +100,16 @@ export async function main (
 
 
 
-function make ({ root, purpose, coin, account, harden = false }: {
+function make ({ root, purpose, coin, account }: {
 
         root: HDKey,
         purpose: string,
         coin: string,
         account: string,
-        harden?: boolean,
 
 }) {
+
+    const harden = root.depth !== 0;
 
     const prefix = harden
         ? `m/-/-/-`
