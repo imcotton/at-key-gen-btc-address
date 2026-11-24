@@ -17,6 +17,7 @@ export async function main (
             sentence, passphrase,
             export_xprv, import_xprv,
             export_xpub, import_xpub,
+            xfp,
             n, verbose, help,
 
         }: Result,
@@ -46,6 +47,13 @@ export async function main (
             .then(HDKey.fromMasterSeed)
 
     );
+
+    if (xfp) {
+        const fp = (root.depth === 0) ? root.fingerprint : 0;
+        print(fp.toString(16).padStart(8, '0'));
+        root.wipePrivateData();
+        return;
+    }
 
     if (export_xprv) {
         print(root.privateExtendedKey);
