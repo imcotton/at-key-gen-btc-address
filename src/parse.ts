@@ -107,6 +107,11 @@ const options = {
         type: 'string',
     },
 
+    xfp: {
+        short: 'x',
+        type: 'boolean',
+    },
+
     verbose: {
         short: 'v',
         type: 'boolean',
