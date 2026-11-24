@@ -197,6 +197,110 @@ describe('main', function () {
 
 
 
+describe('xfp', function () {
+
+    it('supports -x', async function () {
+
+        const mnemonic = `
+
+            abandon abandon abandon abandon abandon abandon
+            abandon abandon abandon abandon abandon about
+
+        `.trim().split(/\s+/);
+
+        await new Promise<string>(async function (resolve) {
+
+            await main(parse([
+                '-x',
+                ...mnemonic,
+            ]), resolve);
+
+        }).then(res => assert_strict.equal(res, '73c5da0a'));
+
+    });
+
+    it('supports --xfp with --passphrase', async function () {
+
+        const mnemonic = `
+
+            abandon abandon abandon abandon abandon abandon
+            abandon abandon abandon abandon abandon about
+
+        `.trim().split(/\s+/);
+
+        await new Promise<string>(async function (resolve) {
+
+            await main(parse([
+                '--xfp',
+                '--passphrase', '7355608',
+                ...mnemonic,
+            ]), resolve);
+
+        }).then(res => assert_strict.equal(res, 'a58f3f9e'));
+
+    });
+
+    it('supports --xfp from --import-xprv', async function () {
+
+        const mnemonic = `
+
+            denial magic satoshi blast forest mixed coffee
+            genuine donkey moon sail cave eyebrow burst load
+
+        `.trim().split(/\s+/);
+
+        const [ xprv, xpub ] = await Promise.all([
+
+            new Promise<string>(async function (res) {
+
+                await main(parse([
+                    '--export-xprv',
+                    ...mnemonic,
+                ]), res);
+
+            }),
+
+            new Promise<string>(async function (res) {
+
+                await main(parse([
+                    '--export-xpub',
+                    ...mnemonic,
+                ]), res);
+
+            }),
+
+        ]);
+
+        await Promise.all([
+
+            new Promise<string>(async function (resolve) {
+
+                await main(parse([
+                    '--xfp',
+                    '--import-xprv', xprv,
+                ]), resolve);
+
+            }).then(res => assert_strict.equal(res, '3824d4c5')),
+
+            new Promise<string>(async function (resolve) {
+
+                await main(parse([
+                    '--xfp',
+                    '--import-xpub', xpub,
+                ]), resolve);
+
+            }).then(res => assert_strict.equal(res, '00000000')),
+
+        ]);
+
+    });
+
+});
+
+
+
+
+
 describe('xprv or xpub', function () {
 
     const mnemonic = `
