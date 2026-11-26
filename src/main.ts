@@ -48,17 +48,19 @@ export async function main (
 
     );
 
+    const off = final(() => root.wipePrivateData());
+
     if (xfp) {
-        const fp = (root.depth === 0) ? root.fingerprint : 0;
-        print(fp.toString(16).padStart(8, '0'));
-        root.wipePrivateData();
-        return;
+        return off(function () {
+
+            const fp = (root.depth === 0) ? root.fingerprint : 0;
+            print(fp.toString(16).padStart(8, '0'));
+
+        });
     }
 
     if (export_xprv) {
-        print(root.privateExtendedKey);
-        root.wipePrivateData();
-        return;
+        return off(() => print(root.privateExtendedKey));
     }
 
     const { extend, derive } = make({
@@ -67,9 +69,7 @@ export async function main (
     });
 
     if (export_xpub) {
-        print(extend.publicExtendedKey);
-        root.wipePrivateData();
-        return;
+        return off(() => print(extend.publicExtendedKey));
     }
 
     const convert = get_address_by(format);
@@ -168,6 +168,24 @@ function otherwise <T> (f?: IO_or_Task<T>) {
         }
 
         return res;
+
+    };
+
+}
+
+
+
+
+
+function final (dispose: () => unknown) {
+
+    return function (run: () => unknown) {
+
+        try {
+            run();
+        } finally {
+            dispose();
+        }
 
     };
 
