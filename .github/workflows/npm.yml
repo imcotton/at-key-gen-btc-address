@@ -54,9 +54,9 @@ jobs:
 
       - name: Publish (latest)
         if: contains(github.ref_name, '-') == false
-        run: npm publish --access=public --tag=latest
+        run: npm stage publish --access=public --tag=latest
 
       - name: Publish (next)
         if: contains(github.ref_name, '-') == true
-        run: npm publish --access=public --tag=next
+        run: npm stage publish --access=public --tag=next
 
